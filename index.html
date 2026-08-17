@@ -6,9 +6,9 @@
   <title>Tanmay Phadke | PHADKEVERSE</title>
   
   <!-- SEO & OpenGraph Meta Tags -->
-  <meta name="description" content="Tanmay Phadke (PHADKEVERSE) - Computer Science Engineer building next-gen full-stack and AI-accelerated web systems." />
+  <meta name="description" content="Tanmay Phadke (PHADKEVERSE) - Computer Science Engineer & Freelance Web Developer crafting high-performance, custom websites." />
   <meta property="og:title" content="Tanmay Phadke | PHADKEVERSE" />
-  <meta property="og:description" content="Interactive Developer Portfolio featuring full-stack engineering, blockchain projects, and live terminal console." />
+  <meta property="og:description" content="Full-stack developer open for freelance web design & development. Explore custom UI/UX, MERN stack, and high-performance websites." />
   <meta property="og:type" content="website" />
 
   <!-- Cyberpunk SVG Favicon -->
@@ -46,6 +46,8 @@
       --terminal-bg: rgba(7, 11, 20, 0.9);
       --terminal-header: #0e1626;
       --hud-bg: rgba(5, 7, 13, 0.85);
+      --tooltip-bg: rgba(9, 14, 26, 0.96);
+      --service-icon-bg: rgba(0, 243, 255, 0.08);
     }
 
     /* LIGHT MODE: Solarpunk Bio-Tech Laboratory */
@@ -68,6 +70,8 @@
       --terminal-bg: rgba(255, 255, 255, 0.92);
       --terminal-header: #d1fae5;
       --hud-bg: rgba(236, 253, 245, 0.85);
+      --tooltip-bg: rgba(255, 255, 255, 0.96);
+      --service-icon-bg: rgba(5, 150, 105, 0.1);
     }
 
     * {
@@ -85,6 +89,90 @@
       overflow-x: hidden;
     }
 
+    /* Micro HUD Toast Notification */
+    #hudToast {
+      position: fixed;
+      bottom: 2.2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--bg-card);
+      border: 1px solid var(--accent-cyan);
+      box-shadow: 0 0 20px var(--accent-glow);
+      color: var(--text-primary);
+      padding: 0.6rem 1.4rem;
+      border-radius: 8px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      z-index: 99990;
+      opacity: 0;
+      pointer-events: none;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #hudToast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Interactive Live Tooltip Pill */
+    .skill-tag {
+      position: relative;
+      background: var(--tag-bg);
+      border: 1px solid var(--tag-border);
+      color: var(--text-primary);
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .skill-tag::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: var(--tooltip-bg);
+      color: var(--text-primary);
+      border: 1px solid var(--card-border-hover);
+      box-shadow: 0 4px 18px var(--accent-glow);
+      padding: 0.5rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-family: 'Fira Code', monospace;
+      font-weight: 500;
+      white-space: normal;
+      width: max-content;
+      max-width: 260px;
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 100;
+      line-height: 1.35;
+      text-align: center;
+    }
+
+    .skill-tag:hover {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 8px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+
+    .skill-tag:hover::after {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
     /* Cyber Starter Preloader Screen */
     #preloader {
       position: fixed;
@@ -98,7 +186,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.7s;
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
       font-family: 'Fira Code', monospace;
     }
 
@@ -109,12 +197,12 @@
 
     .preloader-content {
       text-align: center;
-      max-width: 440px;
+      max-width: 460px;
       padding: 2rem;
     }
 
     .preloader-emblem {
-      font-size: 3.5rem;
+      font-size: 3.8rem;
       color: #00f3ff;
       margin-bottom: 1rem;
       filter: drop-shadow(0 0 16px rgba(0, 243, 255, 0.8));
@@ -157,7 +245,7 @@
       height: 100%;
       background: linear-gradient(90deg, #00f3ff, #ff0055);
       box-shadow: 0 0 10px #00f3ff;
-      transition: width 0.1s linear;
+      transition: width 0.15s ease-out;
     }
 
     /* Background Canvas */
@@ -205,6 +293,24 @@
     .telemetry-item span {
       color: var(--accent-cyan);
       font-weight: 700;
+    }
+
+    .freelance-live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: #10b981;
+      font-weight: 700;
+    }
+
+    .freelance-live-badge::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse 1.5s infinite;
     }
 
     /* Header & Navigation */
@@ -305,6 +411,13 @@
       align-items: center;
     }
 
+    .badge-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1.2rem;
+    }
+
     .badge {
       display: inline-flex;
       align-items: center;
@@ -316,10 +429,16 @@
       font-size: 0.85rem;
       font-weight: 700;
       color: var(--accent-cyan);
-      margin-bottom: 1.2rem;
       text-transform: uppercase;
       letter-spacing: 1.5px;
       box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .badge-freelance {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.45);
+      color: #10b981;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
     }
 
     .badge-pulse {
@@ -328,6 +447,15 @@
       background: var(--accent-cyan);
       border-radius: 50%;
       box-shadow: 0 0 10px var(--accent-cyan);
+      animation: pulse 1.8s infinite;
+    }
+
+    .badge-pulse-green {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
       animation: pulse 1.8s infinite;
     }
 
@@ -551,27 +679,56 @@
       margin-bottom: 0.5rem;
     }
 
+    /* Freelance Services Specific Cards */
+    .service-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--service-icon-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.2rem;
+      color: var(--accent-cyan);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .service-features {
+      list-style: none;
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--card-border);
+    }
+
+    .service-features li {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .service-features li::before {
+      content: '▹';
+      color: var(--accent-cyan);
+      font-weight: bold;
+    }
+
     .skills-wrapper {
       display: flex;
       flex-wrap: wrap;
       gap: 0.6rem;
       margin-top: 1.2rem;
-    }
-
-    .skill-tag {
-      background: var(--tag-bg);
-      border: 1px solid var(--tag-border);
-      color: var(--text-primary);
-      padding: 0.4rem 0.85rem;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-
-    .skill-tag:hover {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 8px var(--accent-glow);
     }
 
     .timeline {
@@ -630,6 +787,7 @@
       font-weight: 700;
       transition: all var(--transition-speed);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      position: relative;
     }
 
     .contact-btn svg {
@@ -718,12 +876,18 @@
   </style>
 </head>
 <body>
+  <!-- HUD Toast Feedback Component -->
+  <div id="hudToast">
+    <span style="color: var(--accent-cyan);">●</span>
+    <span id="toastMessage">[COPIED_TO_CLIPBOARD]</span>
+  </div>
+
   <!-- Cyber Starter Screen -->
   <div id="preloader">
     <div class="preloader-content">
       <div class="preloader-emblem">♞</div>
       <div class="preloader-title">PHADKE<span style="color:#00f3ff">VERSE</span></div>
-      <div class="preloader-status" id="preloaderStatus">INITIALIZING SYSTEM ARCHITECTURE...</div>
+      <div class="preloader-status" id="preloaderStatus">INITIALIZING CORE DAEMON...</div>
       <div class="progress-bar-wrap">
         <div class="progress-bar-fill" id="preloaderProgress"></div>
       </div>
@@ -736,8 +900,8 @@
   <div class="telemetry-bar">
     <div class="telemetry-container">
       <div class="telemetry-item">NODE: <span>PHADKEVERSE_CORE</span></div>
+      <div class="telemetry-item">STATUS: <span class="freelance-live-badge">AVAILABLE_FOR_FREELANCE</span></div>
       <div class="telemetry-item">FPS: <span id="fpsCounter">60</span></div>
-      <div class="telemetry-item">TACTIC: <span>CHESS_GRID_ENGAGED</span></div>
     </div>
   </div>
 
@@ -747,6 +911,7 @@
         <a href="#" class="logo">PHADKE<span class="gradient-text">VERSE</span></a>
         <ul class="nav-links">
           <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
           <li><a href="#projects">Projects</a></li>
           <li><a href="#skills">Skills</a></li>
           <li><a href="#education">Education</a></li>
@@ -772,18 +937,24 @@
       <div class="container">
         <div class="hero-grid">
           <div>
-            <div class="badge">
-              <span class="badge-pulse"></span>
-              Computer Science & Engineering
+            <div class="badge-group">
+              <div class="badge">
+                <span class="badge-pulse"></span>
+                Computer Science & Engineering
+              </div>
+              <div class="badge badge-freelance">
+                <span class="badge-pulse-green"></span>
+                Open for Freelancing
+              </div>
             </div>
-            <h1 class="hero-title" data-scramble="Building Next-Gen Tech with Speed & Intelligence">
-              Building Next-Gen Tech with <span class="gradient-text">Speed & Intelligence</span>
+            <h1 class="hero-title" data-scramble="Designing & Engineering Fast Web Experiences">
+              Designing & Engineering <span class="gradient-text">Fast Web Experiences</span>
             </h1>
             <p class="hero-subtitle">
-              I am Tanmay Phadke, an engineering student exploring the intersection of modern full-stack development, structured software engineering lifecycles, and AI-accelerated workflows.
+              I am Tanmay Phadke — an engineer and freelance web developer helping brands, founders, and creators transform concepts into custom, responsive, high-performance websites.
             </p>
             <div class="hero-cta">
-              <a href="#projects" class="btn btn-primary">Featured Deployments</a>
+              <a href="#services" class="btn btn-primary">Hire for Freelance</a>
               <a href="Tanmay_Phadke_Resume.pdf" download class="btn btn-outline">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
@@ -803,14 +974,74 @@
             </div>
             <div class="terminal-content" id="terminalOutput">
               <div class="term-log">PHADKEVERSE Kernel v2.6 [Online]</div>
-              <div class="term-log">Type <span class="highlight">'help'</span> or test <span class="highlight">'matrix'</span> / <span class="highlight">'chess'</span>.</div>
+              <div class="term-log">Status: <span class="highlight">OPEN FOR FREELANCE & WEB DESIGN</span></div>
+              <div class="term-log">Type <span class="highlight">'hire'</span>, <span class="highlight">'services'</span>, or <span class="highlight">'help'</span>.</div>
             </div>
             <div class="terminal-topbar" style="border-top: 1px solid var(--card-border); border-bottom: none; background: transparent;">
               <div class="term-input-row">
                 <span>&gt;</span>
-                <input type="text" class="term-input" id="terminalInput" placeholder="Type a command (help, projects, chess, matrix)..." autocomplete="off" />
+                <input type="text" class="term-input" id="terminalInput" placeholder="Type a command (hire, services, projects)..." autocomplete="off" />
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Freelance Services Section -->
+    <section id="services">
+      <div class="container">
+        <h2 class="section-title" data-scramble="Freelance & Development Services">Freelance & Web Solutions</h2>
+        <div class="grid">
+          <!-- Service 1: Custom Website Design -->
+          <div class="card service-card">
+            <div>
+              <div class="service-icon">🎨</div>
+              <span class="card-meta">UI/UX & Frontend</span>
+              <h3>Custom Web Design</h3>
+              <p>
+                Modern, eye-catching visual design tailored to your brand identity. Clean layouts, futuristic interactive elements, and intuitive user experiences built to turn visitors into clients.
+              </p>
+            </div>
+            <ul class="service-features">
+              <li>Modern UI/UX Prototyping</li>
+              <li>Responsive Desktop & Mobile Layouts</li>
+              <li>Interactive Animations & Particle FX</li>
+            </ul>
+          </div>
+
+          <!-- Service 2: Full-Stack Web Development -->
+          <div class="card service-card">
+            <div>
+              <div class="service-icon">⚡</div>
+              <span class="card-meta">Full-Stack Engineering</span>
+              <h3>End-to-End Development</h3>
+              <p>
+                Transforming designs into production-ready web applications using modern full-stack architectures (MERN stack, Django, REST APIs, or pure zero-dependency web tech).
+              </p>
+            </div>
+            <ul class="service-features">
+              <li>MERN / Django Web Applications</li>
+              <li>API Integration & Database Schemas</li>
+              <li>Fast, Lightweight Single-Page Builds</li>
+            </ul>
+          </div>
+
+          <!-- Service 3: Website Launch & Optimization -->
+          <div class="card service-card">
+            <div>
+              <div class="service-icon">🚀</div>
+              <span class="card-meta">Optimization & Hosting</span>
+              <h3>Speed & Launch Support</h3>
+              <p>
+                Complete support to get your website deployed online. Performance auditing, SEO metadata integration, custom domain setup, and lightning-fast loading speeds.
+              </p>
+            </div>
+            <ul class="service-features">
+              <li>Custom Domain & Hosting Setup</li>
+              <li>SEO & OpenGraph Social Previews</li>
+              <li>Speed & Lighthouse Optimization</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -822,11 +1053,11 @@
         <h2 class="section-title" data-scramble="System Overview">System Overview</h2>
         <div class="card">
           <p>
-            A Computer Science & Engineering student driven by a mindset of building, shipping, and optimizing software. Blending strong foundational problem-solving across Java, Python, and C++ with modern agile web stacks, I leverage AI tools and vibe coding workflows to dramatically accelerate development cycles and iterate rapidly.
+            A Computer Science & Engineering student and freelance builder driven by a mindset of shipping clean, high-impact software. Blending strong algorithmic foundations across Java, Python, and C++ with modern agile web stacks, I leverage AI tools and vibe coding workflows to build fast, bespoke web solutions for clients worldwide.
           </p>
           <br>
           <p>
-            Trained in structured Software Engineering methodologies like <strong>Agile</strong>, <strong>Scrum</strong>, and <strong>RAD</strong>, I combine high-velocity prototyping with dependable engineering practices, active communication, and technical leadership.
+            Trained in structured Software Engineering methodologies like <strong>Agile</strong>, <strong>Scrum</strong>, and <strong>RAD</strong>, I ensure clear milestones, dependable communication, and top-tier code architecture on every freelance delivery.
           </p>
         </div>
       </div>
@@ -845,11 +1076,11 @@
               Developed a web-based RTO Help Application to streamline traffic violation reporting and complaint management. Enables users to report road-related issues, track complaint status in real-time, and interact securely with transport authorities for enhanced road safety and transparency.
             </p>
             <div class="skills-wrapper">
-              <span class="skill-tag">MongoDB</span>
-              <span class="skill-tag">Express.js</span>
-              <span class="skill-tag">React.js</span>
-              <span class="skill-tag">Node.js</span>
-              <span class="skill-tag">REST APIs</span>
+              <span class="skill-tag" data-tooltip="NoSQL document database for scalable violation reports">MongoDB</span>
+              <span class="skill-tag" data-tooltip="Backend server framework handling complaint routing">Express.js</span>
+              <span class="skill-tag" data-tooltip="Reactive single-page dashboard for complaint tracking">React.js</span>
+              <span class="skill-tag" data-tooltip="Asynchronous runtime for fast API processing">Node.js</span>
+              <span class="skill-tag" data-tooltip="Standardized endpoints for RTO authority data sync">REST APIs</span>
             </div>
           </div>
 
@@ -861,11 +1092,11 @@
               An immutable land registry and supervision marketplace built with Blockchain and Django. Secured land registration records against tampering, empowered users to verify ownership and list plots for buying/selling, and provided administrative telemetry dashboards.
             </p>
             <div class="skills-wrapper">
-              <span class="skill-tag">Python</span>
-              <span class="skill-tag">Django</span>
-              <span class="skill-tag">MongoDB</span>
-              <span class="skill-tag">Blockchain Security</span>
-              <span class="skill-tag">Smart Verification</span>
+              <span class="skill-tag" data-tooltip="Core backend logic and ledger verification scripts">Python</span>
+              <span class="skill-tag" data-tooltip="Robust web framework for admin dashboards and auth">Django</span>
+              <span class="skill-tag" data-tooltip="Metadata and listing registry storage">MongoDB</span>
+              <span class="skill-tag" data-tooltip="Immutable cryptographic chain preventing title fraud">Blockchain Security</span>
+              <span class="skill-tag" data-tooltip="Automated title deed validation pipeline">Smart Verification</span>
             </div>
           </div>
         </div>
@@ -881,10 +1112,10 @@
             <h3>Programming Languages</h3>
             <p>Core algorithmic foundations and problem solving.</p>
             <div class="skills-wrapper">
-              <span class="skill-tag">Java</span>
-              <span class="skill-tag">Python</span>
-              <span class="skill-tag">C++</span>
-              <span class="skill-tag">JavaScript</span>
+              <span class="skill-tag" data-tooltip="OOP principles, multithreading, and enterprise logic">Java</span>
+              <span class="skill-tag" data-tooltip="AI integration, automation, and rapid backend scripting">Python</span>
+              <span class="skill-tag" data-tooltip="Memory management, data structures, and speed">C++</span>
+              <span class="skill-tag" data-tooltip="Modern ES6+, async architecture, and DOM manipulation">JavaScript</span>
             </div>
           </div>
 
@@ -892,12 +1123,12 @@
             <h3>Web & Full Stack</h3>
             <p>End-to-end modern application development.</p>
             <div class="skills-wrapper">
-              <span class="skill-tag">MongoDB</span>
-              <span class="skill-tag">Express.js</span>
-              <span class="skill-tag">React.js</span>
-              <span class="skill-tag">Node.js</span>
-              <span class="skill-tag">Django</span>
-              <span class="skill-tag">HTML5 / CSS3</span>
+              <span class="skill-tag" data-tooltip="Document indexing, aggregations, and schema modeling">MongoDB</span>
+              <span class="skill-tag" data-tooltip="RESTful routing, middleware, and API controllers">Express.js</span>
+              <span class="skill-tag" data-tooltip="State hooks, component lifecycles, and UI modules">React.js</span>
+              <span class="skill-tag" data-tooltip="Event-driven architecture and microservice backends">Node.js</span>
+              <span class="skill-tag" data-tooltip="Django ORM, secure sessions, and administrative tooling">Django</span>
+              <span class="skill-tag" data-tooltip="Semantic structure, Flexbox/Grid, and responsive styling">HTML5 / CSS3</span>
             </div>
           </div>
 
@@ -905,10 +1136,10 @@
             <h3>Methodologies & Lifecycles</h3>
             <p>Structured development frameworks and execution.</p>
             <div class="skills-wrapper">
-              <span class="skill-tag">Agile Methodology</span>
-              <span class="skill-tag">Scrum Framework</span>
-              <span class="skill-tag">RAD Development</span>
-              <span class="skill-tag">Sprint Planning</span>
+              <span class="skill-tag" data-tooltip="Iterative sprints, backlog grooming, and fast releases">Agile Methodology</span>
+              <span class="skill-tag" data-tooltip="Sprint cycles, daily standups, and retrospective reviews">Scrum Framework</span>
+              <span class="skill-tag" data-tooltip="Component-driven prototyping and rapid user feedback">RAD Development</span>
+              <span class="skill-tag" data-tooltip="Milestone forecasting, story point estimations, and velocity">Sprint Planning</span>
             </div>
           </div>
 
@@ -916,10 +1147,10 @@
             <h3>AI & Development Tools</h3>
             <p>Productivity amplification and version control.</p>
             <div class="skills-wrapper">
-              <span class="skill-tag">Git</span>
-              <span class="skill-tag">GitHub</span>
-              <span class="skill-tag">Vibe Coding</span>
-              <span class="skill-tag">AI Tooling Mastery</span>
+              <span class="skill-tag" data-tooltip="Branching strategies, merge conflict resolution, and commits">Git</span>
+              <span class="skill-tag" data-tooltip="Remote repositories, open-source workflow, and CI/CD">GitHub</span>
+              <span class="skill-tag" data-tooltip="High-velocity coding blending AI generation with prompt design">Vibe Coding</span>
+              <span class="skill-tag" data-tooltip="Leveraging LLMs and coding assistants for 10x output">AI Tooling Mastery</span>
             </div>
           </div>
 
@@ -927,9 +1158,9 @@
             <h3>Core Competencies</h3>
             <p>Execution, teamwork, and agility.</p>
             <div class="skills-wrapper">
-              <span class="skill-tag">Technical Leadership</span>
-              <span class="skill-tag">Communication</span>
-              <span class="skill-tag">Rapid Prototyping</span>
+              <span class="skill-tag" data-tooltip="Guiding project teams and aligning engineering goals">Technical Leadership</span>
+              <span class="skill-tag" data-tooltip="Clear technical documentation and cross-functional sync">Communication</span>
+              <span class="skill-tag" data-tooltip="Turning concepts into working web products in record time">Rapid Prototyping</span>
             </div>
           </div>
         </div>
@@ -968,33 +1199,33 @@
     <!-- Contact Section -->
     <section id="contact">
       <div class="container">
-        <h2 class="section-title" data-scramble="Direct Outreach">Direct Outreach</h2>
+        <h2 class="section-title" data-scramble="Start a Project">Start a Project // Direct Outreach</h2>
         <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
-          Select any channel below to connect directly via native protocols and platforms.
+          Have a website project in mind or need a custom web solution? Reach out directly via WhatsApp, Email, or LinkedIn.
         </p>
         <div class="contact-grid">
-          <!-- LinkedIn -->
-          <a href="https://www.linkedin.com/in/tanmay-phadke22" target="_blank" rel="noopener noreferrer" class="contact-btn">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
-            </svg>
-            <span>LinkedIn</span>
-          </a>
-
           <!-- WhatsApp -->
-          <a href="https://wa.me/918999840839?text=Hi%20Tanmay,%20reached%20out%20via%20your%20portfolio" target="_blank" rel="noopener noreferrer" class="contact-btn">
+          <a href="https://wa.me/918999840839?text=Hi%20Tanmay,%20I'd%20like%20to%20discuss%20a%20website%20project%20with%20you" target="_blank" rel="noopener noreferrer" class="contact-btn" data-copy="+91 8999840839">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.13.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.29s-1.47-.73-1.7-.81c-.23-.09-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.14-.26-.02-.4.11-.52.11-.11.25-.29.37-.44.13-.14.17-.25.25-.41.09-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48z"/>
             </svg>
-            <span>WhatsApp</span>
+            <span>WhatsApp (Fastest)</span>
           </a>
 
           <!-- Email -->
-          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=tanmayphadke22@gmail.com&su=Inquiry%20via%20PHADKEVERSE" target="_blank" rel="noopener noreferrer" class="contact-btn">
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=tanmayphadke22@gmail.com&su=Freelance%20Project%20Inquiry%20via%20PHADKEVERSE" target="_blank" rel="noopener noreferrer" class="contact-btn" data-copy="tanmayphadke22@gmail.com">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
             </svg>
-            <span>Email</span>
+            <span>Email Proposal</span>
+          </a>
+
+          <!-- LinkedIn -->
+          <a href="https://www.linkedin.com/in/tanmay-phadke22" target="_blank" rel="noopener noreferrer" class="contact-btn" data-copy="https://www.linkedin.com/in/tanmay-phadke22">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+            </svg>
+            <span>LinkedIn Message</span>
           </a>
         </div>
       </div>
@@ -1010,43 +1241,11 @@
 
   <footer>
     <div class="container">
-      <p>&copy; 2026 Tanmay Phadke. Built with Love &bull; PHADKEVERSE</p>
+      <p>&copy; 2026 Tanmay Phadke. Available for Freelance & Custom Web Development &bull; PHADKEVERSE</p>
     </div>
   </footer>
 
   <script>
-    /* Starter Screen / Preloader Engine */
-    const preloader = document.getElementById('preloader');
-    const preloaderProgress = document.getElementById('preloaderProgress');
-    const preloaderStatus = document.getElementById('preloaderStatus');
-
-    const bootLogs = [
-      "SYNCHRONIZING REPOSITORIES...",
-      "CALIBRATING CHESS ENGINE & NEON BIOMES...",
-      "MOUNTING MERN & BLOCKCHAIN PROTOCOLS...",
-      "SYSTEM OPERATIONAL. WELCOME TO PHADKEVERSE."
-    ];
-
-    let progress = 0;
-    let logIndex = 0;
-    const progressInterval = setInterval(() => {
-      progress += Math.floor(Math.random() * 12) + 6;
-      if (progress > 100) progress = 100;
-      
-      preloaderProgress.style.width = progress + '%';
-      
-      if (progress > 25 && logIndex === 0) { logIndex = 1; preloaderStatus.innerText = bootLogs[1]; }
-      if (progress > 60 && logIndex === 1) { logIndex = 2; preloaderStatus.innerText = bootLogs[2]; }
-      if (progress >= 95 && logIndex === 2) { logIndex = 3; preloaderStatus.innerText = bootLogs[3]; }
-
-      if (progress === 100) {
-        clearInterval(progressInterval);
-        setTimeout(() => {
-          preloader.classList.add('fade-out');
-        }, 350);
-      }
-    }, 60);
-
     /* Synthetic Web Audio SFX Engine */
     let sfxEnabled = false;
     let audioCtx = null;
@@ -1081,6 +1280,78 @@
       document.getElementById('sfxText').innerText = sfxEnabled ? 'ON' : 'MUTED';
       if (sfxEnabled) playTone(880, 'sine', 0.1, 0.05);
     });
+
+    /* Micro HUD Toast & Clipboard Utility */
+    const hudToast = document.getElementById('hudToast');
+    const toastMessage = document.getElementById('toastMessage');
+    let toastTimeout = null;
+
+    function showToast(text) {
+      toastMessage.innerText = text;
+      hudToast.classList.add('show');
+      playTone(950, 'sine', 0.09, 0.04);
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        hudToast.classList.remove('show');
+      }, 2200);
+    }
+
+    document.querySelectorAll('[data-copy]').forEach(btn => {
+      btn.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        const copyVal = btn.getAttribute('data-copy');
+        navigator.clipboard.writeText(copyVal).then(() => {
+          showToast(`[COPIED: ${copyVal}]`);
+        });
+      });
+    });
+
+    /* Terminal Output Click to Copy */
+    document.getElementById('terminalOutput').addEventListener('click', (e) => {
+      const target = e.target.closest('.term-log');
+      if (target) {
+        const text = target.innerText.replace(/^>\s*/, '');
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('[TERMINAL_LOG_COPIED]');
+        });
+      }
+    });
+
+    /* Extended Cinematic Starter Screen / Preloader Engine */
+    const preloader = document.getElementById('preloader');
+    const preloaderProgress = document.getElementById('preloaderProgress');
+    const preloaderStatus = document.getElementById('preloaderStatus');
+
+    const bootLogs = [
+      "INITIALIZING CORE DAEMON...",
+      "SYNCHRONIZING GIT REPOSITORIES...",
+      "MOUNTING MERN & BLOCKCHAIN PROTOCOLS...",
+      "CALIBRATING FREELANCE CLIENT PIPELINE...",
+      "ESTABLISHING BIOLUMINESCENT NEON BIOME...",
+      "ALL MODULES ONLINE. WELCOME TO PHADKEVERSE."
+    ];
+
+    let progress = 0;
+    let logIndex = 0;
+    const progressInterval = setInterval(() => {
+      progress += Math.random() * 2.8 + 1.2;
+      if (progress > 100) progress = 100;
+      
+      preloaderProgress.style.width = progress + '%';
+      
+      if (progress > 18 && logIndex === 0) { logIndex = 1; preloaderStatus.innerText = bootLogs[1]; playTone(440, 'sine', 0.04, 0.02); }
+      if (progress > 38 && logIndex === 1) { logIndex = 2; preloaderStatus.innerText = bootLogs[2]; playTone(520, 'sine', 0.04, 0.02); }
+      if (progress > 60 && logIndex === 2) { logIndex = 3; preloaderStatus.innerText = bootLogs[3]; playTone(660, 'sine', 0.04, 0.02); }
+      if (progress > 82 && logIndex === 3) { logIndex = 4; preloaderStatus.innerText = bootLogs[4]; playTone(780, 'sine', 0.04, 0.02); }
+      if (progress >= 98 && logIndex === 4) { logIndex = 5; preloaderStatus.innerText = bootLogs[5]; playTone(880, 'sine', 0.06, 0.03); }
+
+      if (progress === 100) {
+        clearInterval(progressInterval);
+        setTimeout(() => {
+          preloader.classList.add('fade-out');
+        }, 500);
+      }
+    }, 70);
 
     /* Theme Engine */
     const themeToggleBtn = document.getElementById('themeToggle');
@@ -1172,19 +1443,21 @@
 
     document.querySelectorAll('[data-scramble]').forEach(el => observer.observe(el));
 
-    /* Terminal Simulator with Easter Eggs */
+    /* Terminal Simulator with Freelance Commands */
     const terminalInput = document.getElementById('terminalInput');
     const terminalOutput = document.getElementById('terminalOutput');
     let commandHistory = [];
     let historyIndex = -1;
 
     const commands = {
-      help: "Commands: 'projects', 'skills', 'about', 'edu', 'contact', 'chess', 'matrix', 'overclock', 'sfx', 'theme', 'clear'",
+      help: "Commands: 'hire', 'services', 'projects', 'skills', 'about', 'edu', 'contact', 'chess', 'matrix', 'clear'",
+      hire: "💼 STATUS: Open for freelance web design & development. DM via WhatsApp (+91 8999840839) or Email (tanmayphadke22@gmail.com).",
+      services: "🛠️ Services: 1. Custom UI/UX & Web Design | 2. Full-Stack Web Dev (MERN/Django) | 3. Fast Turnaround Builds & SEO Optimization",
       projects: "🚀 Deployments: 1. RTO WEB HELP (MERN Capstone) | 2. LandAccess+ (Django + Blockchain + MongoDB)",
       skills: "⚡ Languages: Java, Python, C++, JS | Web: MERN, Django | SDLC: Agile, Scrum, RAD",
       about: "🚀 CS Engineering student combining full-stack architectures with rapid AI-accelerated workflows.",
       edu: "🎓 BE CSE @ Mumbai University | Diploma CE @ MSBTE (2023-26) | Goa Board",
-      contact: "📬 LinkedIn: in/tanmay-phadke22 | WhatsApp: +91 8999840839 | Email: tanmayphadke22@gmail.com",
+      contact: "📬 WhatsApp: +91 8999840839 | Email: tanmayphadke22@gmail.com | LinkedIn: in/tanmay-phadke22",
       chess: "♞ Strategic advantage established. Floating holographic pieces active on canvas.",
       sudo: "❌ ACCESS DENIED: User tanmay holds root privileges on this node.",
       clear: "CLEAR"
@@ -1240,6 +1513,7 @@
           resLine.innerHTML = commands[val] || `Command not found: '${val}'. Type 'help' for available commands.`;
           terminalOutput.appendChild(resLine);
 
+          if (val === 'hire' || val === 'services') document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
           if (val === 'projects') document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
           if (val === 'edu') document.getElementById('education')?.scrollIntoView({ behavior: 'smooth' });
           if (val === 'skills') document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' });
@@ -1252,7 +1526,7 @@
       }
     });
 
-    /* Interactive Canvas with Bioluminescent Particles + Floating Cyber Chess Pieces */
+    /* Interactive Canvas with Particles + Chess Pieces */
     const canvas = document.getElementById('particleCanvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -1334,7 +1608,6 @@
       }
     }
 
-    /* Floating Holographic Chess Piece Class */
     class FloatingChessPiece {
       constructor() {
         const pieceGlyphs = ['♞', '♜', '♛', '♚', '♝', '♟'];
@@ -1427,13 +1700,11 @@
         ctx.clearRect(0, 0, width, height);
         const isDark = htmlElement.getAttribute('data-theme') === 'dark';
 
-        // Draw Ambient Floating Chess Pieces
         for (let i = 0; i < chessPieces.length; i++) {
           chessPieces[i].update();
           chessPieces[i].draw(isDark);
         }
 
-        // Draw Bioluminescent Particles & Links
         for (let i = 0; i < particles.length; i++) {
           particles[i].update();
           particles[i].draw(isDark);
