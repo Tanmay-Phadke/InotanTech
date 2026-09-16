@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, Menu, X } from 'lucide-react';
 import { developerDetails } from '../data/portfolioData';
+import { ThemeToggle } from './ThemeToggle';
+import { useTheme } from '../context/ThemeContext';
 
 export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+  const { activeThemeConfig } = useTheme();
 
   const navLinks = [
     { name: 'About', href: '#hero' },
@@ -50,11 +53,14 @@ export const Navbar: React.FC = () => {
             href="#hero" 
             className="flex items-center gap-2.5 group cursor-pointer"
           >
-            <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#FF8C00] to-[#FF5F00] flex items-center justify-center text-black font-extrabold text-sm shadow-[0_0_15px_rgba(255,140,0,0.4)] group-hover:scale-105 transition-transform">
+            <div 
+              style={{ backgroundColor: activeThemeConfig.primaryColor }}
+              className="w-9 h-9 rounded-full flex items-center justify-center text-black font-extrabold text-sm shadow-[0_0_15px_rgba(255,140,0,0.4)] group-hover:scale-105 transition-all duration-300"
+            >
               TP
             </div>
             <span className="font-bold tracking-tight text-white text-base font-outfit hidden sm:block">
-              Tanmay<span className="text-[#FF8C00]">.dev</span>
+              Tanmay<span style={{ color: activeThemeConfig.primaryColor }}>.dev</span>
             </span>
           </a>
 
@@ -73,7 +79,11 @@ export const Navbar: React.FC = () => {
                   {isActive && (
                     <motion.div
                       layoutId="activeTab"
-                      className="absolute inset-0 bg-[#FF8C00]/15 border border-[#FF8C00]/40 rounded-full"
+                      style={{ 
+                        backgroundColor: `${activeThemeConfig.primaryColor}20`,
+                        borderColor: `${activeThemeConfig.primaryColor}60`
+                      }}
+                      className="absolute inset-0 border rounded-full"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -83,16 +93,22 @@ export const Navbar: React.FC = () => {
             })}
           </div>
 
-          {/* Action CTAs */}
+          {/* Action CTAs & Theme Toggle */}
           <div className="flex items-center gap-3">
+            {/* Theme Switcher Toggle */}
+            <ThemeToggle />
+
             <a
               href={developerDetails.personal.resumePath}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-gradient-to-r from-[#FF8C00] to-[#FF5F00] rounded-full shadow-[0_0_20px_rgba(255,140,0,0.3)] hover:shadow-[0_0_25px_rgba(255,140,0,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all"
+              style={{ 
+                background: `linear-gradient(135deg, ${activeThemeConfig.primaryColor} 0%, ${activeThemeConfig.secondaryColor} 100%)` 
+              }}
+              className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white rounded-full shadow-lg hover:scale-[1.03] active:scale-[0.97] transition-all duration-300"
             >
               <FileText className="w-3.5 h-3.5" />
-              <span>Resume</span>
+              <span className="hidden sm:inline">Resume</span>
             </a>
 
             {/* Mobile Menu Trigger */}
@@ -115,7 +131,7 @@ export const Navbar: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden mt-3 max-w-6xl mx-auto glass-panel rounded-2xl p-5 border border-white/10 shadow-2xl"
+            className="md:hidden mt-3 max-w-6xl mx-auto glass-panel rounded-2xl p-5 border border-white/10 shadow-2xl space-y-4"
           >
             <div className="flex flex-col gap-2">
               {navLinks.map((link) => (
@@ -126,9 +142,15 @@ export const Navbar: React.FC = () => {
                   className="px-4 py-3 text-sm font-medium text-zinc-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors flex items-center justify-between"
                 >
                   <span>{link.name}</span>
-                  <span className="text-[#FF8C00] text-xs">→</span>
+                  <span style={{ color: activeThemeConfig.primaryColor }} className="text-xs">→</span>
                 </a>
               ))}
+            </div>
+
+            {/* Mobile Theme Toggle */}
+            <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+              <span className="text-xs font-mono text-zinc-400">Select Portfolio Theme:</span>
+              <ThemeToggle compact />
             </div>
           </motion.div>
         )}
@@ -136,3 +158,4 @@ export const Navbar: React.FC = () => {
     </header>
   );
 };
+

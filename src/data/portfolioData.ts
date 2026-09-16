@@ -40,6 +40,20 @@ export interface Education {
   details: string;
 }
 
+export interface JourneyItem {
+  id: string;
+  year: string;
+  title: string;
+  category: 'Foundation' | 'Diploma' | 'Degree' | 'Internship';
+  badge: string;
+  institution: string;
+  boardOrUniversity: string;
+  status: 'Completed' | 'Pursuing';
+  description: string;
+  highlights: string[];
+  iconType: 'foundation' | 'diploma' | 'internship' | 'degree';
+}
+
 export const developerDetails = {
   personal: {
     fullName: "Tanmay Chethan Phadke",
@@ -79,12 +93,12 @@ export const developerDetails = {
 
   academicJourney: [
     {
-      degree: "Bachelor of Engineering (B.E.) in Computer Engineering",
+      degree: "Bachelor of Engineering (B.E.) (Pursuing)",
       institution: "Mumbai University",
       boardOrUniversity: "University of Mumbai",
       period: "2026 - Present",
       status: "Pursuing",
-      details: "Specializing in advanced systems, software architecture, full-stack development, and artificial intelligence."
+      details: "Specializing in Computer Science & Engineering, software architecture, full-stack systems, Web3, and artificial intelligence."
     },
     {
       degree: "Diploma in Computer Engineering",
@@ -92,17 +106,72 @@ export const developerDetails = {
       boardOrUniversity: "Maharashtra State Board of Technical Education (MSBTE)",
       period: "2023 - 2026",
       status: "Completed",
-      details: "Core focus on Data Structures & Algorithms, Object-Oriented Programming, Database Management, and Software Testing."
+      details: "Core focus on Data Structures & Algorithms, Object-Oriented Programming, Database Systems, Web Tech, and Software Testing."
     },
     {
-      degree: "Secondary School Certificate (SSC)",
+      degree: "Foundation (High School)",
       institution: "High School Education",
       boardOrUniversity: "Goa Board",
       period: "Completed",
       status: "Completed",
-      details: "Built foundational excellence in Mathematics, Science, and Computer Fundamentals."
+      details: "Built foundational academic excellence in Mathematics, Science, and Computer Fundamentals under the Goa State Board."
     }
   ] as Education[],
+
+  journeySteps: [
+    {
+      id: "foundation-goa-board",
+      year: "2020 – 2023",
+      title: "Foundation (High School)",
+      category: "Foundation",
+      badge: "Goa Board",
+      institution: "High School Education",
+      boardOrUniversity: "Goa Board",
+      status: "Completed",
+      description: "Established strong analytical and logical foundations under the Goa Board. Developed an early curiosity for computer systems, programming fundamentals, and problem-solving.",
+      highlights: ["Goa Board High School", "Mathematics & Science Core", "Computer Fundamentals"],
+      iconType: "foundation"
+    },
+    {
+      id: "diploma-computer-eng",
+      year: "2023 – 2026",
+      title: "Diploma in Computer Engineering",
+      category: "Diploma",
+      badge: "MSBTE | YBIT",
+      institution: "Yashwantrao Bhonsale Institute of Technology",
+      boardOrUniversity: "MSBTE",
+      status: "Completed",
+      description: "Rigorous technical diploma covering Data Structures & Algorithms, Object-Oriented Programming (C++/Java), Relational Databases (SQL/MongoDB), and full-stack web application concepts.",
+      highlights: ["Data Structures & Algorithms", "OOP & System Design", "Full Stack Development Labs"],
+      iconType: "diploma"
+    },
+    {
+      id: "software-internship",
+      year: "2025",
+      title: "Software Engineering Intern",
+      category: "Internship",
+      badge: "Softmusk Solutions",
+      institution: "Softmusk Solutions Pvt. Ltd.",
+      boardOrUniversity: "Industry Experience",
+      status: "Completed",
+      description: "Engaged in production software development. Designed & deployed decentralized smart contract integration modules for 'Land Registry Using Blockchain' web application using React and Web3 protocols.",
+      highlights: ["Blockchain Title Registry", "Web3 Frontend Integration", "Agile & Scrum Engineering"],
+      iconType: "internship"
+    },
+    {
+      id: "be-computer-science",
+      year: "2026 – Present",
+      title: "B.E. (Pursuing) in Computer Science Engineering",
+      category: "Degree",
+      badge: "Mumbai University",
+      institution: "University of Mumbai",
+      boardOrUniversity: "University of Mumbai",
+      status: "Pursuing",
+      description: "Currently pursuing Bachelor of Engineering in Computer Science Engineering. Specializing in advanced web systems, decentralized architecture, intelligent AI integrations, and cloud deployments.",
+      highlights: ["Advanced Software Architecture", "Distributed Systems & Web3", "AI & Full-Stack Innovations"],
+      iconType: "degree"
+    }
+  ] as JourneyItem[],
 
   internship: [
     {

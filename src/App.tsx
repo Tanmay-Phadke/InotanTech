@@ -8,14 +8,21 @@ import { Certificates } from './components/Certificates';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { CustomCursor } from './components/CustomCursor';
+import { ChessDecorations } from './components/ChessDecorations';
+import { ChessScrollTracker } from './components/ChessScrollTracker';
+import { ThemeProvider } from './context/ThemeContext';
 
-export const App: React.FC = () => {
+export const AppContent: React.FC = () => {
   return (
-    <div className="min-h-screen bg-[#0F0E0E] text-white relative selection:bg-[#FF8C00] selection:text-black overflow-x-hidden">
-      {/* Background Ambient Grid & Radial Gradients */}
+    <div className="min-h-screen text-white relative selection:bg-[#FF8C00] selection:text-black overflow-x-hidden transition-colors duration-400">
+      {/* Background Ambient Grid */}
       <div className="fixed inset-0 bg-ambient-grid pointer-events-none opacity-40 z-0" />
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-radial-glow pointer-events-none opacity-60 blur-3xl z-0" />
-      <div className="fixed bottom-0 right-0 w-[600px] h-[600px] bg-radial-bottom pointer-events-none opacity-40 blur-3xl z-0" />
+
+      {/* Interactive Floating Chess Pieces Layer */}
+      <ChessDecorations />
+
+      {/* Custom Chess Pawn-to-Queen Scroll Progress Bar */}
+      <ChessScrollTracker />
 
       {/* Interactive Custom Glowing Cursor */}
       <CustomCursor />
@@ -39,4 +46,14 @@ export const App: React.FC = () => {
   );
 };
 
+export const App: React.FC = () => {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+};
+
 export default App;
+
+
